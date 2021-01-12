@@ -1,11 +1,21 @@
 import Main from './App/Main';
-import CustomThemeProvider from './CustomThemeProvider';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
-function App() {
+
+
+const App = () => {
+
+  const theme = createMuiTheme({
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    typography: {
+      fontFamily: "Alef"
+    }
+  })
+
   return (
-    <CustomThemeProvider>
+    <ThemeProvider theme={theme}>
       <Main />
-    </CustomThemeProvider>
+    </ThemeProvider>
   );
 }
 
