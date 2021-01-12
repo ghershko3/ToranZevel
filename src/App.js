@@ -1,5 +1,6 @@
 import Main from './App/Main';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import ToransProvider from './Context.js/ToransProvider';
 
 
 
@@ -14,7 +15,9 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Main />
+      <ToransProvider>
+        <Main />
+      </ToransProvider>
     </ThemeProvider>
   );
 }
