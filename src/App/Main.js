@@ -26,6 +26,7 @@ const Main = () => {
         const fetchData = async () => {
             try {
                 const fetchedShifting = await API.graphql(graphqlOperation(listTorans));
+                console.log(fetchedShifting)
                 setShifting(fetchedShifting.data.listTorans.items);
                 setToran()
             } catch (error) {
@@ -35,6 +36,10 @@ const Main = () => {
 
         fetchData()
     }, [])
+
+    useEffect(() => {
+        setToran()
+    }, [shifting])
 
     const setToran = () => {
         const sadakCount = shifting?.length
