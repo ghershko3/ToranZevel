@@ -18,9 +18,6 @@ const useStyles = makeStyles({
 const Main = () => {
     const classes = useStyles()
     const [shifting, setShifting] = useState()
-    const [currenToran, setCurrenToran] = useState()
-    const [nextToran, setNextToran] = useState()
-    const [prevToran, setPrevToran] = useState()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,7 +25,6 @@ const Main = () => {
                 const fetchedShifting = await API.graphql(graphqlOperation(listTorans));
                 console.log(fetchedShifting)
                 setShifting(fetchedShifting.data.listTorans.items);
-                setToran()
             } catch (error) {
                 console.log("Error fetching shifting", error);
             }
@@ -37,27 +33,13 @@ const Main = () => {
         fetchData()
     }, [])
 
-    useEffect(() => {
-        setToran()
-    }, [shifting])
 
-    const setToran = () => {
-        const sadakCount = shifting?.length
-        let currentOrder = (moment().week() % sadakCount) + 1
+    const sadakCount = shifting?.length
+    const currentOrder = (moment().week() % sadakCount) + 1
 
-        let currentAvilableToran = shifting?.find(toran => toran.order === currentOrder && !toran.isInOffice)
-        let nextAvilableToran = shifting?.find(toran => (toran.order === ((currentOrder + 1) % sadakCount)) && !toran.isInOffice)
-        let prevAvilableToran = shifting?.find(toran => (toran.order === ((currentOrder - 1) % sadakCount)) && !toran.isInOffice)
-
-        // while (!nextAvilableToran) {
-        //     nextAvilableToran = shifting.find(toran => toran.order === currentOrder && !toran.isInOffice)
-        //     currentOrder++
-        // }
-
-        setCurrenToran(currentAvilableToran)
-        setNextToran(nextAvilableToran)
-        setPrevToran(prevAvilableToran)
-    }
+    const currentAvilableToran = shifting?.find(toran => toran.order === currentOrder && !toran.isInOffice)
+    const nextAvilableToran = shifting?.find(toran => (toran.order === ((currentOrder + 1) % sadakCount)) && !toran.isInOffice)
+    const prevAvilableToran = shifting?.find(toran => (toran.order === ((currentOrder - 1) % sadakCount)) && !toran.isInOffice)
 
     return (
         <Grid container direction={'column'} justify={'center'} alignItems={'center'} className={classes.root}>
@@ -72,7 +54,7 @@ const Main = () => {
                             <Typography variant={'h6'}>{'התורן הקודם'}</Typography>
                         </Grid>
                         <Grid item>
-                            <Typography variant={'h4'}>{prevToran?.name}</Typography>
+                            <Typography variant={'h4'}>{prevAvilableToran?.name}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -83,14 +65,14 @@ const Main = () => {
                             <Typography variant={'h6'}>{'התורן הבא'}</Typography>
                         </Grid>
                         <Grid item>
-                            <Typography variant={'h4'}>{nextToran?.name}</Typography>
+                            <Typography variant={'h4'}>{nextAvilableToran?.name}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
 
             <Grid item xs={12} container direction={'row'} justify={'center'}>
-                <Typography variant={'h1'}>{currenToran?.name}</Typography>
+                <Typography variant={'h1'}>{currentAvilableToran?.name}</Typography>
             </Grid>
         </Grid>
     )
