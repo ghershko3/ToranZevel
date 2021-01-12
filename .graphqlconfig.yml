@@ -1,0 +1,15 @@
+projects:
+  ToranZevel:
+    schemaPath: amplify/backend/api/ToranZevel/build/schema.graphql
+    includes:
+      - src/graphql/**/*.js
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: javascript
+        generatedFileName: ''
+        docsFilePath: src/graphql
+        region: eu-central-1
+        apiId: null
+        maxDepth: 2

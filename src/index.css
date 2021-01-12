@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'Alef';
+  src: url('./Assets/Fonts/Alef-Regular.ttf');
+}
+
+html {
+  margin: 0;
+  height: 100%;
+}
+
+/* body {
+  height: 100%;
+  width: 100%;
+  position: relative;
+} */
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+.App {
+  text-align: center;
+  height: 100%;
+}

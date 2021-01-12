@@ -1,0 +1,15 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-toranzevel-staging-172005-authRole",
+      "UnauthRoleArn": "arn:aws:iam::051152892643:role/amplify-toranzevel-staging-172005-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::051152892643:role/amplify-toranzevel-staging-172005-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-toranzevel-staging-172005-deployment",
+      "UnauthRoleName": "amplify-toranzevel-staging-172005-unauthRole",
+      "StackName": "amplify-toranzevel-staging-172005",
+      "StackId": "arn:aws:cloudformation:eu-central-1:051152892643:stack/amplify-toranzevel-staging-172005/3fb04760-5431-11eb-a264-0661b67b4f2e",
+      "AmplifyAppId": "d20dd0db13v5rh"
+    }
+  }
+}
