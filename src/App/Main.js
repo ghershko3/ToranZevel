@@ -22,13 +22,13 @@ const Main = () => {
 
     const sadakCount = shifting?.length
 
-    const currentOrder = (moment().week() % sadakCount) + 1
-    const nextOrder = (moment().add(1, 'w').week() % sadakCount) + 1
-    const prevOrder = (moment().subtract(1, 'w').week() % sadakCount) + 1
+    const currentOrder = (moment().week() % sadakCount)
+    const nextOrder = (moment().add(1, 'w').week() % sadakCount)
+    const prevOrder = (moment().subtract(1, 'w').week() % sadakCount)
 
-    const currentAvilableToran = shifting?.find(toran => toran.order === currentOrder && !toran.isInOffice)
-    const nextAvilableToran = shifting?.find(toran => (toran.order === nextOrder) && !toran.isInOffice)
-    const prevAvilableToran = shifting?.find(toran => (toran.order === prevOrder) && !toran.isInOffice)
+    const currentAvilableToran = currentOrder && shifting[currentOrder] 
+    const nextAvilableToran = nextOrder && shifting[nextOrder]
+    const prevAvilableToran = prevOrder && shifting[prevOrder]
 
     // useEffect(() => {
     //     console.log()

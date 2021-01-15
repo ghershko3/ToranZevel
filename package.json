@@ -4,11 +4,13 @@
     "private": true,
     "dependencies": {
         "@material-ui/core": "^4.11.2",
+        "@material-ui/icons": "^4.11.2",
         "@material-ui/styles": "^4.11.2",
         "@testing-library/jest-dom": "^5.11.8",
         "@testing-library/react": "^11.2.3",
         "@testing-library/user-event": "^12.6.0",
         "aws-amplify": "^3.3.14",
+        "formik": "^2.2.6",
         "jss-rtl": "^0.3.0",
         "lodash": "^4.17.20",
         "moment": "^2.29.1",

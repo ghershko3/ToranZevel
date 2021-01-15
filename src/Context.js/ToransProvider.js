@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { API, graphqlOperation } from 'aws-amplify';
 import { listTorans } from '../graphql/queries';
-import { createToran } from '../graphql/mutations';
+import { createToran, updateToran } from '../graphql/mutations';
 import _ from 'lodash'
 
 export const ToransContext = createContext()
@@ -9,10 +9,20 @@ export const ToransContext = createContext()
 const ToransProvider = ({ children }) => {
     const [shifting, setShifting] = useState()
 
-    const addToran = async (newToran) => {
+    const onAddToran = async (newToran) => {
         try {
-            await API.graphql(graphqlOperation(createToran, {input: newToran}));
-            setShifting(_.sortBy([...shifting, newToran], ['order']));
+            const added = await API.graphql(graphqlOperation(createToran, { input: newToran }));
+            setShifting(_.sortBy([...shifting, added.data.createToran], ['order']));
+        } catch (error) {
+            console.log("Error on add Toran", error);
+        }
+    }
+
+    const onUpdateToran = async (updatedToran) => {
+        try {
+            const updated = await API.graphql(graphqlOperation(updateToran, { input: updatedToran }));
+            const updatedShifting = shifting.map(toran => toran.id == updatedToran.id ? updated.data.updateToran : toran)
+            setShifting(_.sortBy(updatedShifting, ['order']));
         } catch (error) {
             console.log("Error on add Toran", error);
         }
@@ -32,7 +42,7 @@ const ToransProvider = ({ children }) => {
     }, [])
 
     return (
-        <ToransContext.Provider value={{shifting, addToran}}>
+        <ToransContext.Provider value={{ shifting, onAddToran, onUpdateToran }}>
             {children}
         </ToransContext.Provider>
     )
