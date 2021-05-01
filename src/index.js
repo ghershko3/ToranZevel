@@ -3,10 +3,24 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Amplify from 'aws-amplify'
-import awsconfig from './aws-exports'
 
-Amplify.configure(awsconfig)
+import firebase from "firebase"
+
+import "firebase/firestore"
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDiFJKUysGc5NXLP77uk3V8dcb8Z1ueA1I",
+  authDomain: "toranzevel-cd73b.firebaseapp.com",
+  databaseURL: "https://toranzevel-cd73b-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "toranzevel-cd73b",
+  storageBucket: "toranzevel-cd73b.appspot.com",
+  messagingSenderId: "262748502257",
+  appId: "1:262748502257:web:0a61d4af21283ac77bd150",
+  measurementId: "G-1K6R6PVSYR"
+};
+
+firebase.initializeApp(firebaseConfig);
 
 ReactDOM.render(
   <React.StrictMode>

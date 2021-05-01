@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/styles';
-import { Grid, Typography } from '@material-ui/core';
+import { Box, CircularProgress, Grid, Typography } from '@material-ui/core';
 import Logo from '../Assets/Images/Logo.png'
 import moment from 'moment'
-import { ToransContext } from '../Context.js/ToransProvider';
-import Manage from './Manage';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import firebase from 'firebase/app'
+import _ from 'lodash'
 
 const useStyles = makeStyles({
     root: {
@@ -18,65 +19,68 @@ const useStyles = makeStyles({
 const Main = () => {
     const classes = useStyles()
 
-    const { shifting } = useContext(ToransContext)
+    const [fetchedTorans, loading, error] = useCollection(firebase.firestore().collection('torans'), { snapshotListenOptions: { includeMetadataChanges: true } });
+    const torans = !loading && _.orderBy(fetchedTorans.docs.map(toran => toran.data()), 'order')
 
-    const sadakCount = shifting?.length
 
-    const currentOrder = (moment().week() % sadakCount)
-    const nextOrder = (moment().add(1, 'w').week() % sadakCount)
-    const prevOrder = (moment().subtract(1, 'w').week() % sadakCount)
+    const sadakCount = !loading && torans.length
 
-    const currentAvilableToran = currentOrder && shifting[currentOrder] 
-    const nextAvilableToran = nextOrder && shifting[nextOrder]
-    const prevAvilableToran = prevOrder && shifting[prevOrder]
+    const currentIndexToBeToran = !loading && (moment().week() % sadakCount)
+    const nextIndexToBeToran = !loading && (moment().add(1, 'w').week() % sadakCount)
+    const prevIndexToBeToran = !loading && (moment().subtract(1, 'w').week() % sadakCount)
 
-    // useEffect(() => {
-    //     console.log()
-    // }, [])
+    const currentAvilableToran = !loading && torans[currentIndexToBeToran]
+    const nextAvilableToran = !loading && torans[nextIndexToBeToran]
+    const prevAvilableToran = !loading && torans[prevIndexToBeToran]
+
     return (
-        <Grid container direction={'column'} justify={'center'} alignItems={'center'} className={classes.root}>
-            <Grid item xs={12} container direction={'row'} justify={'center'} className={classes.logo}>
-                <img src={Logo} height={400} />
-            </Grid>
+        loading
+            ? <Box width={'100%'} display={'flex'} justifyContent={'center'}><CircularProgress /></Box>
+            : error
+                ? error
+                : <Grid container direction={'column'} justify={'center'} alignItems={'center'} className={classes.root}>
+                    <Grid item xs={12} container direction={'row'} justify={'center'} className={classes.logo}>
+                        <img src={Logo} height={400} />
+                    </Grid>
 
-            <Grid item xs={12} sm={5} container direction={'row'} justify={'space-between'}>
-                <Grid item>
-                    <Grid container direction={'column'} alignItems={'center'} justify={'center'}>
+                    <Grid item xs={12} sm={5} container direction={'row'} justify={'space-between'}>
                         <Grid item>
-                            <Typography variant={'h6'}>{'התורן הבא'}</Typography>
+                            <Grid container direction={'column'} alignItems={'center'} justify={'center'}>
+                                <Grid item>
+                                    <Typography variant={'h6'}>{'התורן הבא'}</Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant={'h4'}>{nextAvilableToran?.name}</Typography>
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid item>
-                            <Typography variant={'h4'}>{nextAvilableToran?.name}</Typography>
+                            <Grid container direction={'column'} alignItems={'center'} justify={'center'}>
+                                <Grid item>
+                                    <Typography variant={'h6'}>{'התורן הקודם'}</Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant={'h4'}>{prevAvilableToran?.name}</Typography>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-                <Grid item>
-                    <Grid container direction={'column'} alignItems={'center'} justify={'center'}>
-                        <Grid item>
-                            <Typography variant={'h6'}>{'התורן הקודם'}</Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant={'h4'}>{prevAvilableToran?.name}</Typography>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
 
-            <Grid item xs={12} container direction={'row'} justify={'center'}>
-                <Grid container direction={'column'} alignItems={'center'} justify={'center'}>
-                    <Grid item>
-                        <Typography variant={'h6'}>{'הזוכה'}</Typography>
+                    <Grid item xs={12} container direction={'row'} justify={'center'}>
+                        <Grid container direction={'column'} alignItems={'center'} justify={'center'}>
+                            <Grid item>
+                                <Typography variant={'h6'}>{'הזוכה'}</Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant={'h1'}>{currentAvilableToran?.name}</Typography>
+                            </Grid>
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <Typography variant={'h1'}>{currentAvilableToran?.name}</Typography>
-                    </Grid>
-                </Grid>
-            </Grid>
 
-            {/* <Grid item xs={12} container direction={'row'} justify={'center'}>
+                    {/* <Grid item xs={12} container direction={'row'} justify={'center'}>
                 <Manage />
             </Grid> */}
-        </Grid>
+                </Grid>
     )
 }
 

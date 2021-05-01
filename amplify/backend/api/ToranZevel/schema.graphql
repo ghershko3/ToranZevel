@@ -1,8 +1,0 @@
-type Toran @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  name: String!
-  isInOffice: Boolean
-  order: Int
-  isOnShift: Boolean
-}
- 

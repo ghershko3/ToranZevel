@@ -21,8 +21,7 @@ const AddNewToran = () => {
         initialValues: {
             name: '',
             order: '',
-            isInOffice: false,
-            isOnShift: false,
+            isInOffice: false
         },
         onSubmit: (values, { resetForm }) => {
             onAddToran(values)
